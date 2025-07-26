@@ -43,7 +43,7 @@ export const LoginForm = ({ onLogin }: LoginFormProps) => {
       } else {
         toast({
           title: "Login Failed",
-          description: "Invalid email/roll number or password. Please use your college email or roll number.",
+          description: "Invalid email/roll number or password. Please use your college email or roll number and your assigned password.",
           variant: "destructive",
         });
       }
@@ -65,7 +65,7 @@ export const LoginForm = ({ onLogin }: LoginFormProps) => {
             SKCT Poll System
           </CardTitle>
           <p className="text-muted-foreground">
-            Use your college email to access polls
+            Use your college email or roll number to access polls
           </p>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -77,7 +77,7 @@ export const LoginForm = ({ onLogin }: LoginFormProps) => {
               <Input
                 id="emailOrRollNumber"
                 type="text"
-                placeholder="727824TUAM001@skct.edu.in or tutor"
+                placeholder="727824TUAM001@skct.edu.in or 727824TUAM001"
                 value={emailOrRollNumber}
                 onChange={(e) => setEmailOrRollNumber(e.target.value)}
                 className="h-12 text-base"
@@ -90,7 +90,7 @@ export const LoginForm = ({ onLogin }: LoginFormProps) => {
               <Input
                 id="password"
                 type="password"
-                placeholder="Enter password"
+                placeholder="Enter your assigned password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="h-12 text-base"
@@ -110,11 +110,11 @@ export const LoginForm = ({ onLogin }: LoginFormProps) => {
 
           <div className="text-sm text-center text-muted-foreground space-y-2">
             <p><strong>Demo Credentials:</strong></p>
-            <p>Student: 727824TUAM001@skct.edu.in, Password: student123</p>
+            <p>Student: 727824TUAM001@skct.edu.in, Password: Pass001#Skct</p>
             <p>Tutor: tutor@skct.edu.in, Password: admin123</p>
             <p className="text-xs mt-2">
-              Note: Google OAuth integration requires backend setup. 
-              For demo purposes, use email/password authentication.
+              Note: Each student has a unique password assigned by the system administrator. 
+              Contact the tutor for your credentials. Google OAuth is not available in this demo.
             </p>
           </div>
         </CardContent>
