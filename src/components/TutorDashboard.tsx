@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { getPolls, savePoll, deletePoll, getUsers, getPollResponses, Poll, User } from '@/lib/storage';
 import { useToast } from '@/hooks/use-toast';
 import { Plus, Trash2, Users, BarChart3 } from 'lucide-react';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 interface TutorDashboardProps {
   user: User;
@@ -204,12 +205,15 @@ export const TutorDashboard = ({ user, onLogout }: TutorDashboardProps) => {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">Tutor Dashboard</h1>
+            <h1 className="text-2xl font-bold">SKCT Poll Dashboard</h1>
             <p className="text-muted-foreground">Welcome back, {user.name}!</p>
           </div>
-          <Button variant="destructive" onClick={onLogout}>
-            Logout
-          </Button>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Button variant="destructive" onClick={onLogout}>
+              Logout
+            </Button>
+          </div>
         </div>
 
         {/* Create Poll Button */}

@@ -33,19 +33,24 @@ export const initializeData = () => {
     {
       rollNumber: 'tutor',
       name: 'Tutor',
-      email: 'tutor@college.edu',
+      email: 'tutor@skct.edu.in',
       password: 'admin123',
       isAdmin: true,
     },
   ];
 
-  // Add 60 students
-  for (let i = 1; i <= 60; i++) {
+  // Add 60 students with college email format (excluding 727824TUAM002)
+  for (let i = 1; i <= 61; i++) {
+    if (i === 2) continue; // Skip discontinued roll number 002
+    
+    const rollNum = i.toString().padStart(3, '0');
+    const email = `727824TUAM${rollNum}@skct.edu.in`;
+    
     users.push({
-      rollNumber: i.toString(),
-      name: `Student ${i}`,
-      email: `student${i}@college.edu`,
-      password: 'pass123',
+      rollNumber: `727824TUAM${rollNum}`,
+      name: `Student ${rollNum}`,
+      email: email,
+      password: 'student123', // Default password for all students
       isAdmin: false,
     });
   }
@@ -61,9 +66,13 @@ export const getUsers = (): User[] => {
   return JSON.parse(localStorage.getItem('pollApp_users') || '[]');
 };
 
-export const authenticateUser = (rollNumber: string, password: string): User | null => {
+export const authenticateUser = (emailOrRollNumber: string, password: string): User | null => {
   const users = getUsers();
-  return users.find(user => user.rollNumber === rollNumber && user.password === password) || null;
+  // Allow authentication with either email or roll number
+  return users.find(user => 
+    (user.email === emailOrRollNumber || user.rollNumber === emailOrRollNumber) && 
+    user.password === password
+  ) || null;
 };
 
 // Poll management

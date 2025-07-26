@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { getPolls, hasUserResponded, saveResponse, Poll, User } from '@/lib/storage';
 import { useToast } from '@/hooks/use-toast';
 import { CheckCircle, Clock, Send } from 'lucide-react';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 interface StudentDashboardProps {
   user: User;
@@ -85,12 +86,15 @@ export const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">Student Dashboard</h1>
+            <h1 className="text-2xl font-bold">SKCT Student Portal</h1>
             <p className="text-muted-foreground">Welcome, {user.name}! (Roll: {user.rollNumber})</p>
           </div>
-          <Button variant="destructive" onClick={onLogout}>
-            Logout
-          </Button>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Button variant="destructive" onClick={onLogout}>
+              Logout
+            </Button>
+          </div>
         </div>
 
         {/* Stats Cards */}

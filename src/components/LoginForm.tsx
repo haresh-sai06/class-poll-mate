@@ -5,22 +5,23 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { authenticateUser, User } from '@/lib/storage';
 import { useToast } from '@/hooks/use-toast';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 interface LoginFormProps {
   onLogin: (user: User) => void;
 }
 
 export const LoginForm = ({ onLogin }: LoginFormProps) => {
-  const [rollNumber, setRollNumber] = useState('');
+  const [emailOrRollNumber, setEmailOrRollNumber] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   const handleLogin = async () => {
-    if (!rollNumber || !password) {
+    if (!emailOrRollNumber || !password) {
       toast({
         title: "Missing Information",
-        description: "Please enter both roll number and password",
+        description: "Please enter both email/roll number and password",
         variant: "destructive",
       });
       return;
@@ -30,7 +31,7 @@ export const LoginForm = ({ onLogin }: LoginFormProps) => {
     
     // Simulate loading for better UX
     setTimeout(() => {
-      const user = authenticateUser(rollNumber, password);
+      const user = authenticateUser(emailOrRollNumber, password);
       
       if (user) {
         localStorage.setItem('pollApp_currentUser', JSON.stringify(user));
@@ -42,7 +43,7 @@ export const LoginForm = ({ onLogin }: LoginFormProps) => {
       } else {
         toast({
           title: "Login Failed",
-          description: "Invalid roll number or password",
+          description: "Invalid email/roll number or password. Please use your college email or roll number.",
           variant: "destructive",
         });
       }
@@ -52,30 +53,33 @@ export const LoginForm = ({ onLogin }: LoginFormProps) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-primary/10 via-background to-accent/10">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="text-center space-y-4">
           <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center mx-auto">
             <span className="text-2xl font-bold text-primary-foreground">📊</span>
           </div>
           <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Class Poll System
+            SKCT Poll System
           </CardTitle>
           <p className="text-muted-foreground">
-            Enter your credentials to access polls
+            Use your college email to access polls
           </p>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="rollNumber" className="text-sm font-medium">
-                Roll Number / Username
+              <Label htmlFor="emailOrRollNumber" className="text-sm font-medium">
+                College Email / Roll Number
               </Label>
               <Input
-                id="rollNumber"
+                id="emailOrRollNumber"
                 type="text"
-                placeholder="Enter roll number (1-60) or 'tutor'"
-                value={rollNumber}
-                onChange={(e) => setRollNumber(e.target.value)}
+                placeholder="727824TUAM001@skct.edu.in or tutor"
+                value={emailOrRollNumber}
+                onChange={(e) => setEmailOrRollNumber(e.target.value)}
                 className="h-12 text-base"
               />
             </div>
@@ -106,8 +110,12 @@ export const LoginForm = ({ onLogin }: LoginFormProps) => {
 
           <div className="text-sm text-center text-muted-foreground space-y-2">
             <p><strong>Demo Credentials:</strong></p>
-            <p>Student: Roll number 1-60, Password: pass123</p>
-            <p>Tutor: Username: tutor, Password: admin123</p>
+            <p>Student: 727824TUAM001@skct.edu.in, Password: student123</p>
+            <p>Tutor: tutor@skct.edu.in, Password: admin123</p>
+            <p className="text-xs mt-2">
+              Note: Google OAuth integration requires backend setup. 
+              For demo purposes, use email/password authentication.
+            </p>
           </div>
         </CardContent>
       </Card>
