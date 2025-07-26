@@ -1,14 +1,61 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState, useEffect } from 'react';
+import { LoginForm } from '@/components/LoginForm';
+import { TutorDashboard } from '@/components/TutorDashboard';
+import { StudentDashboard } from '@/components/StudentDashboard';
+import { initializeData, User } from '@/lib/storage';
 
 const Index = () => {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Initialize data on first load
+    initializeData();
+    
+    // Check for existing session
+    const savedUser = localStorage.getItem('pollApp_currentUser');
+    if (savedUser) {
+      try {
+        setCurrentUser(JSON.parse(savedUser));
+      } catch (error) {
+        console.error('Error parsing saved user:', error);
+        localStorage.removeItem('pollApp_currentUser');
+      }
+    }
+    setIsLoading(false);
+  }, []);
+
+  const handleLogin = (user: User) => {
+    setCurrentUser(user);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('pollApp_currentUser');
+    setCurrentUser(null);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center space-y-4">
+          <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center mx-auto animate-pulse">
+            <span className="text-2xl font-bold text-primary-foreground">📊</span>
+          </div>
+          <p className="text-muted-foreground">Loading Poll System...</p>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  if (!currentUser) {
+    return <LoginForm onLogin={handleLogin} />;
+  }
+
+  if (currentUser.isAdmin) {
+    return <TutorDashboard user={currentUser} onLogout={handleLogout} />;
+  }
+
+  return <StudentDashboard user={currentUser} onLogout={handleLogout} />;
 };
 
 export default Index;
