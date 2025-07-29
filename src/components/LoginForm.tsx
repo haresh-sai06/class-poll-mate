@@ -110,11 +110,11 @@ export const LoginForm = ({ onLogin }: LoginFormProps) => {
 
           <div className="text-sm text-center text-muted-foreground space-y-2">
             <p><strong>Demo Credentials:</strong></p>
-            <p>Student: 727824TUAM001@skct.edu.in, Password: Pass001#Skct</p>
+            <p>Student: 727824TUAM001@skct.edu.in, Password: AIML@2025</p>
             <p>Tutor: tutor@skct.edu.in, Password: admin123</p>
             <p className="text-xs mt-2">
-              Note: Each student has a unique password assigned by the system administrator. 
-              Contact the tutor for your credentials. Google OAuth is not available in this demo.
+              All students use the common password: <strong>AIML@2025</strong> for first-time login. 
+              You'll be prompted to set your own password after first login.
             </p>
           </div>
         </CardContent>
