@@ -39,9 +39,11 @@ const COMMON_STUDENT_PASSWORD = 'AIML@2025';
 
 // Initialize default data
 export const initializeData = () => {
-  if (localStorage.getItem('pollApp_users')) {
-    return;
-  }
+  // Clear existing data to use updated password
+  localStorage.removeItem('pollApp_users');
+  localStorage.removeItem('pollApp_polls');
+  localStorage.removeItem('pollApp_responses');
+  localStorage.removeItem('pollApp_currentUser');
 
   const users: User[] = [
     {
