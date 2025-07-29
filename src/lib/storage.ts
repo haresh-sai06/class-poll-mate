@@ -71,16 +71,22 @@ export const initializeData = () => {
     
     usedNames.add(name);
 
-    users.push({
+    const student = {
       rollNumber,
       name: `Student ${rollNumber}`, // Temporary name until first login
       email,
       password: COMMON_STUDENT_PASSWORD,
       isAdmin: false,
       hasCompletedSetup: false,
-    });
+    };
+
+    console.log('Creating student:', student);
+    users.push(student);
   }
 
+  console.log('Total users created:', users.length);
+  console.log('Students created:', users.filter(u => !u.isAdmin).length);
+  
   localStorage.setItem('pollApp_users', JSON.stringify(users));
   localStorage.setItem('pollApp_polls', JSON.stringify([]));
   localStorage.setItem('pollApp_responses', JSON.stringify([]));
@@ -93,10 +99,16 @@ export const getUsers = (): User[] => {
 
 export const authenticateUser = (emailOrRollNumber: string, password: string): User | null => {
   const users = getUsers();
-  return users.find(user => 
+  console.log('Attempting to authenticate:', emailOrRollNumber, 'with password:', password);
+  console.log('Available users:', users.map(u => ({ rollNumber: u.rollNumber, email: u.email, password: u.password })));
+  
+  const user = users.find(user => 
     (user.email === emailOrRollNumber || user.rollNumber === emailOrRollNumber) && 
     user.password === password
-  ) || null;
+  );
+  
+  console.log('Authentication result:', user ? 'SUCCESS' : 'FAILED');
+  return user || null;
 };
 
 export const updateUserPassword = (rollNumber: string, currentPassword: string, newPassword: string): boolean => {
