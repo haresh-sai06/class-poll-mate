@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { LoginForm } from '@/components/LoginForm';
 import { TutorDashboard } from '@/components/TutorDashboard';
 import { StudentDashboard } from '@/components/StudentDashboard';
+import { FirstTimeSetup } from '@/components/FirstTimeSetup';
 import { initializeData, User } from '@/lib/storage';
 
 const Index = () => {
@@ -29,6 +30,10 @@ const Index = () => {
     setCurrentUser(user);
   };
 
+  const handleSetupComplete = (updatedUser: User) => {
+    setCurrentUser(updatedUser);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('pollApp_currentUser');
     setCurrentUser(null);
@@ -49,6 +54,11 @@ const Index = () => {
 
   if (!currentUser) {
     return <LoginForm onLogin={handleLogin} />;
+  }
+
+  // Check if student needs first-time setup
+  if (!currentUser.isAdmin && !currentUser.hasCompletedSetup) {
+    return <FirstTimeSetup user={currentUser} onSetupComplete={handleSetupComplete} />;
   }
 
   if (currentUser.isAdmin) {

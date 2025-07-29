@@ -6,8 +6,9 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { getPolls, hasUserResponded, saveResponse, Poll, User } from '@/lib/storage';
 import { useToast } from '@/hooks/use-toast';
-import { CheckCircle, Clock, Send } from 'lucide-react';
+import { CheckCircle, Clock, Send, LogOut } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { PasswordChangeForm } from '@/components/PasswordChangeForm';
 
 interface StudentDashboardProps {
   user: User;
@@ -90,8 +91,10 @@ export const StudentDashboard = ({ user, onLogout }: StudentDashboardProps) => {
             <p className="text-muted-foreground">Welcome, {user.name}! (Roll: {user.rollNumber})</p>
           </div>
           <div className="flex items-center gap-2">
+            <PasswordChangeForm rollNumber={user.rollNumber} />
             <ThemeToggle />
             <Button variant="destructive" onClick={onLogout}>
+              <LogOut className="w-4 h-4 mr-2" />
               Logout
             </Button>
           </div>
