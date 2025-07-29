@@ -4,6 +4,7 @@ export interface User {
   email: string;
   password: string;
   isAdmin: boolean;
+  hasCompletedSetup?: boolean;
 }
 
 export interface Poll {
@@ -133,10 +134,11 @@ export const initializeData = () => {
 
     users.push({
       rollNumber,
-      name,
+      name: `Student ${rollNumber}`, // Temporary name until first login
       email,
       password: studentPasswords[rollNumber],
       isAdmin: false,
+      hasCompletedSetup: false,
     });
   }
 
@@ -165,6 +167,25 @@ export const updateUserPassword = (rollNumber: string, currentPassword: string, 
   
   users[userIndex].password = newPassword;
   localStorage.setItem('pollApp_users', JSON.stringify(users));
+  return true;
+};
+
+export const completeUserSetup = (rollNumber: string, name: string, newPassword: string): boolean => {
+  const users = getUsers();
+  const userIndex = users.findIndex(user => user.rollNumber === rollNumber);
+  if (userIndex === -1) return false;
+  
+  users[userIndex].name = name;
+  users[userIndex].password = newPassword;
+  users[userIndex].hasCompletedSetup = true;
+  localStorage.setItem('pollApp_users', JSON.stringify(users));
+  
+  // Update current user in localStorage
+  const currentUser = JSON.parse(localStorage.getItem('pollApp_currentUser') || '{}');
+  if (currentUser.rollNumber === rollNumber) {
+    localStorage.setItem('pollApp_currentUser', JSON.stringify(users[userIndex]));
+  }
+  
   return true;
 };
 
