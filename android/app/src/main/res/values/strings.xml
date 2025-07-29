@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Poll Box</string>
+    <string name="title_activity_main">Poll Box</string>
+    <string name="package_name">com.haresh.app</string>
+    <string name="custom_url_scheme">com.haresh.app</string>
+</resources>
